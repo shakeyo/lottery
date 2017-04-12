@@ -1,0 +1,19 @@
+package chat
+
+enum EChatCommand
+{
+  C2S_JoinChannel = 1,
+  C2S_LeaveChannel = 2,
+
+  C2S_FetchHistory = 3
+
+}
+
+
+message ChatMessage
+{
+
+
+}
+
+message

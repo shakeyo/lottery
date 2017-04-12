@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package chat_service;
+
+message StringMessage {
+  string value = 1;
+}
+
+service AuthService {
+  rpc Echo(StringMessage) returns (StringMessage) {}
+}
