@@ -32,7 +32,7 @@ func rpcUserLogOff(args []interface{}) {
 	a := args[0].(gate.Agent)
 	_ = a
 
-	user := a.UserData().(*model.User)
+	//user := a.UserData().(*model.User)
 
 	/*	channel.Broadcast(&msg.F2C_MemberChangedNotify{
 		Name:     user.NickName,
