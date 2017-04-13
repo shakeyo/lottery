@@ -5,3 +5,8 @@ go:
   - master
 
 go_import_path: shakeyo/lottery/src/server
+
+install:
+  - go get github.com/name5566/leaf
+  - go get github.com/gorilla/websocket
+  - go get gopkg.in/mgo.v2/bson

@@ -2,14 +2,14 @@ package internal
 
 import (
 	"reflect"
-	"server/api"
+	"server/modules/world/internal/remote_api"
 	"server/msg"
 
 	"github.com/name5566/leaf/gate"
 	"github.com/name5566/leaf/log"
 )
 
-var userAPI = api.NewUserAPI()
+var userAPI = remote_api.NewUserAPI()
 
 func handleMsg(m interface{}, h interface{}) {
 	skeleton.RegisterChanRPC(reflect.TypeOf(m), h)

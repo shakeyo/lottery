@@ -1,7 +1,7 @@
 package msg
 
 func init() {
-	Processor.Register(&F2C_ChannelNotify{})
+	Processor.Register(&F2C_RoomNotify{})
 	Processor.Register(&C2F_JoinRoom{})
 	Processor.Register(&F2C_JoinRoom_Ack{})
 	Processor.Register(&C2F_QuitRoom{})
@@ -51,7 +51,7 @@ type F2C_JoinRoom_Ack struct {
 	Members []int64
 }
 
-type F2C_ChannelNotify struct {
+type F2C_RoomNotify struct {
 	Event  string
 	RoomID string
 	Member ChatMember
@@ -71,6 +71,10 @@ type C2F_SendMsg struct {
 
 type F2C_SendMsg_Ack struct {
 	Err string
+}
+
+type C2F_FetchHistoryMessage struct {
+	Conversation ChatConversation
 }
 
 type F2C_MsgList struct {

@@ -74,7 +74,7 @@ func handleJoinRoom(args []interface{}) {
 	sendMsg.Members = channel.Members()
 	a.WriteMsg(&sendMsg)
 
-	channel.Broadcast(&msg.F2C_ChannelNotify{
+	channel.Broadcast(&msg.F2C_RoomNotify{
 		RoomID: m.RoomID,
 		Event:  "Enter",
 		Member: msg.ChatMember{
@@ -114,7 +114,7 @@ func handleQuitRoom(args []interface{}) {
 		return
 	}
 	channel.Leave(user.UID)
-	channel.Broadcast(&msg.F2C_ChannelNotify{
+	channel.Broadcast(&msg.F2C_RoomNotify{
 		RoomID: m.RoomID,
 		Event:  "Leave",
 		Member: msg.ChatMember{
