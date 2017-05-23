@@ -6,6 +6,6 @@ type SystemAPI interface {
 }
 
 type UserAPI interface {
-	Authorize(userID int64, userToken string) (string, int)
+	Authenticate(userID int64, userToken string) (string, int)
 	ModifyProperty(userID int64, token string) bool
 }

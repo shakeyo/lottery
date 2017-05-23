@@ -13,7 +13,7 @@ import (
 */
 func KickOffUser(w http.ResponseWriter, req *http.Request) {
 	log.Print("processing KickOffUser")
-	io.WriteString(w, "hello, world!\n")
+	io.WriteString(w, "KickOffUser!\n")
 }
 
 /*
@@ -21,7 +21,7 @@ func KickOffUser(w http.ResponseWriter, req *http.Request) {
 */
 func KickOffAllUser(w http.ResponseWriter, req *http.Request) {
 	log.Print("processing KickOffAllUser")
-	io.WriteString(w, "hello, world!\n")
+	io.WriteString(w, "KickOffAllUser!\n")
 }
 
 /*
@@ -29,7 +29,7 @@ func KickOffAllUser(w http.ResponseWriter, req *http.Request) {
 */
 func SyncUserData(w http.ResponseWriter, req *http.Request) {
 	log.Print("processing SyncUserData")
-	io.WriteString(w, "hello, world!\n")
+	io.WriteString(w, "SyncUserData!\n")
 }
 
 /*
@@ -39,5 +39,5 @@ func SyncUserData(w http.ResponseWriter, req *http.Request) {
 */
 func PushNoticeToUser(w http.ResponseWriter, req *http.Request) {
 	log.Print("processing PushNoticeToUser")
-	io.WriteString(w, "hello, world!\n")
+	io.WriteString(w, "PushNoticeToUser!\n")
 }

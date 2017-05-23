@@ -13,15 +13,64 @@ import (
 var (
 	//临时用
 	msgList []*msg.ChatMessage
+	roomMap map[string]*IMChatRoom
 )
+
+type IMChatRoom struct {
+	ID          string
+	Name        string
+	Description string
+	Avatar      string
+	Owner       int
+
+	channel *Channel
+}
+
+func (c *IMChatRoom) Join(agent *gate.Agent) bool {
+	if c.channel.IsContainAgent(agent) {
+		return false
+	}
+
+	user := agent.UserData().(*model.User)
+	if user != null {
+		c.channel
+	}
+
+	c.channel.Add(agent)
+	return true
+}
+
+func newChatRoom(id string, name string, desc string, avatar string, owner int) *IMChatRoom {
+
+	channel, ret := ChannelServiceInstance.Channel(id)
+	if ret == true {
+		return nil
+	}
+
+	channel = ChannelServiceInstance.NewChannel(id)
+
+	room := &IMChatRoom{
+		Name:        name,
+		Description: desc,
+		Avatar:      avatar,
+		Owner:       Owner,
+		channel:     channel}
+
+	roomMap[id] = room
+	return room
+}
+
+func findRoom(id string) *IMChatRoom {
+	return room[id]
+}
 
 func handleMsg(m interface{}, h interface{}) {
 	skeleton.RegisterChanRPC(reflect.TypeOf(m), h)
 }
 
 func init() {
-	handleMsg(&msg.C2F_JoinRoom{}, handleJoinRoom)
-	handleMsg(&msg.C2F_QuitRoom{}, handleQuitRoom)
+	handleMsg(&msg.C2F_JoinChatRoom{}, handleJoinRoom)
+	handleMsg(&msg.C2F_LeaveChatRoom{}, handleQuitRoom)
 	handleMsg(&msg.C2F_SendMsg{}, handleSendMsg)
 
 	skeleton.RegisterChanRPC("UserLogOff", rpcUserLogOff)
@@ -46,28 +95,27 @@ func rpcUserLogged(args []interface{}) {
 }
 
 func handleJoinRoom(args []interface{}) {
-	m := args[0].(*msg.C2F_JoinRoom)
+	m := args[0].(*msg.C2F_JoinChatRoom)
 	a := args[1].(gate.Agent)
 
-	sendMsg := &msg.F2C_JoinRoom_Ack{}
+	sendMsg := &msg.F2C_JoinChatRoom_Ack{}
 	sendAckFunc := func(err string) {
-		sendMsg.Err = err
-		sendMsg.RoomID = m.RoomID
+		sendMsg.ErrStr = err
+		sendMsg.ID = m.ID
 		a.WriteMsg(sendMsg)
 	}
 
-	if a.UserData() == nil {
-		sendAckFunc("forbid")
-		return
+	if a.UserData() != nil {
+
+		user := a.UserData().(*model.User)
+		log.Debug("User:%v Join room:%v", user.UID, m.ID)
 	}
 
-	user := a.UserData().(*model.User)
+	room := findRoom(m.ID)
 
-	log.Debug("User:%v Join room:%v", user.UID, m.RoomID)
-
-	channel, ret := ChannelServiceInstance.Channel(m.RoomID)
+	channel, ret := ChannelServiceInstance.Channel(m.ID)
 	if ret == false {
-		channel = ChannelServiceInstance.NewChannel(m.RoomID)
+		channel = ChannelServiceInstance.NewChannel(m.ID)
 	}
 	channel.Add(&a)
 
@@ -99,14 +147,10 @@ func handleQuitRoom(args []interface{}) {
 		a.WriteMsg(sendMsg)
 	}
 
-	if a.UserData() == nil {
-		sendAckFunc("forbid")
-		return
+	if a.UserData() != nil {
+		user := a.UserData().(*model.User)
+		log.Debug("User:%v quit room:%v", user.UID, m.RoomID)
 	}
-
-	user := a.UserData().(*model.User)
-
-	log.Debug("User:%v quit room:%v", user.UID, m.RoomID)
 
 	channel, ret := ChannelServiceInstance.Channel(m.RoomID)
 	if ret == false {

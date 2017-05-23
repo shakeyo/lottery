@@ -2,8 +2,9 @@ package main
 
 import (
 	"server/conf"
-	"server/modules/admin"
+	"server/modules/api"
 	"server/modules/chat"
+	"server/modules/dashboard"
 	"server/modules/game"
 	"server/modules/gate"
 	"server/modules/world"
@@ -24,6 +25,7 @@ func main() {
 		world.Module,
 		chat.Module,
 		game.Module,
-		admin.Module,
+		dashboard.Module,
+		api.Module,
 	)
 }

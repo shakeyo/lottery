@@ -15,6 +15,16 @@ func init() {
 	Processor.Register(&W2C_Heartbeat{})
 }
 
+const (
+	ErrorCode_Unknown         = 500
+	ErrorCode_OK              = 200
+	ErrorCode_InvaildToken    = 302
+	ErrorCode_VersionLimit    = 201
+	ErrorCode_InvaildData     = 414
+	ErrorCode_AccountForbid   = 422
+	ErrorCode_InvaildProtocol = 509
+)
+
 type C2W_Heartbeat struct {
 }
 

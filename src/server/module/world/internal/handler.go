@@ -2,14 +2,14 @@ package internal
 
 import (
 	"reflect"
-	"server/modules/world/internal/remote_api"
+	"server/modules/world/internal/api"
 	"server/msg"
 
 	"github.com/name5566/leaf/gate"
 	"github.com/name5566/leaf/log"
 )
 
-var userAPI = remote_api.NewUserAPI()
+var userAPI = api.NewUserAPI()
 
 func handleMsg(m interface{}, h interface{}) {
 	skeleton.RegisterChanRPC(reflect.TypeOf(m), h)
@@ -44,7 +44,7 @@ func handleAuth(args []interface{}) {
 		return
 	}
 
-	user, ret := (*userAPI).AuthUser(m.UID, m.Token)
+	user, ret := (*userAPI).Authenticate(m.UID, m.Token)
 	if ret != 0 {
 		sendAckFunc(ret)
 	}

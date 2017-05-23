@@ -2,9 +2,7 @@ package internal
 
 import (
 	//	"reflect"
-	"server/model"
 	"sync"
-	//	"server/msg"
 
 	"github.com/name5566/leaf/gate"
 	"github.com/name5566/leaf/log"
@@ -75,7 +73,7 @@ func (c *Channel) Broadcast(v interface{}) error {
 
 }
 
-func (c *Channel) IsContain(uid int64) bool {
+func (c *Channel) IsContainUser(uid int64) bool {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -86,17 +84,29 @@ func (c *Channel) IsContain(uid int64) bool {
 	return false
 }
 
-func (c *Channel) Add(session *gate.Agent) {
+func (c *Channel) IsContainAgent(session *gate.Agent) bool {
+	c.RLock()
+	defer c.RUnlock()
+
+	for _, s := range c.uidMap {
+		if s == session {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (c *Channel) Add(session *gate.Agent, uid int64) {
 	c.Lock()
 	defer c.Unlock()
 
-	user := (*session).UserData().(*model.User)
-	c.uidMap[user.UID] = session
-	c.members = append(c.members, user.UID)
+	c.uidMap[uid] = session
+	c.members = append(c.members, uid)
 }
 
 func (c *Channel) Leave(uid int64) {
-	if !c.IsContain(uid) {
+	if !c.IsContainUser(uid) {
 		return
 	}
 

@@ -14,7 +14,7 @@ import (
 */
 func SendSystemMessage(w http.ResponseWriter, req *http.Request) {
 	log.Print("processing SendSystemMessage")
-	io.WriteString(w, "hello, world!\n")
+	io.WriteString(w, "SendSystemMessage!\n")
 }
 
 /*
@@ -23,5 +23,5 @@ func SendSystemMessage(w http.ResponseWriter, req *http.Request) {
 */
 func SetServiceStatus(w http.ResponseWriter, req *http.Request) {
 	log.Print("processing SetServiceStatus")
-	io.WriteString(w, "hello, world!\n")
+	io.WriteString(w, "SetServiceStatus!\n")
 }
